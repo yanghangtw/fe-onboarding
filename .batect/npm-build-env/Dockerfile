@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
     libatomic1 libevent-2.1-7 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install pre-commit
+RUN pip install pre-commit detect-secrets
 
 RUN mkdir -p $NVM_DIR \
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash

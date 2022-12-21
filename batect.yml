@@ -100,3 +100,19 @@ tasks:
             - dependency-scan
             - unit-test
             - e2e-test
+
+    secret-baseline:
+        description: Generate the baseline file of detect-secrets
+        group: Utility tasks
+        run:
+            container: npm-build-env
+            command: bash -c "detect-secrets scan --only-allowlisted /code/src > /code/.secrets.baseline"
+
+    audit-baseline:
+        description: Audit the baseline file
+        group: Utility tasks
+        prerequisites:
+            - secret-baseline
+        run:
+            container: npm-build-env
+            command: bash ./scripts/audit-secrets.sh

@@ -31,3 +31,4 @@ test-results/
 playwright-report/
 
 .batect/caches
+.secrets.baseline
