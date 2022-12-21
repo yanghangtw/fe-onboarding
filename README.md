@@ -118,3 +118,7 @@ The major reason not to use batect is unable to watch file changes inside contai
 Uses batect to run all CI steps locally, including: `unit-test`, `e2e-test`, `code-style`, `secret-scan`, `dependency-scan`, `build-dist`.
 
 </details>
+
+## Documentation
+
+Find other documentation under the `docs` folder.

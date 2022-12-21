@@ -1,0 +1,14 @@
+default_stages:
+    - commit
+repos:
+    - repo: local
+      hooks:
+          - id: code-style
+            name: Prettier format
+            entry: bash ./scripts/pre-commit-formatter
+            language: system
+            verbose: true
+    - repo: https://github.com/Yelp/detect-secrets
+      rev: v1.4.0
+      hooks:
+          - id: detect-secrets

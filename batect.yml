@@ -1,0 +1,102 @@
+project_name: hello-vue
+
+containers:
+    npm-build-env:
+        build_directory: .batect/npm-build-env
+        volumes:
+            - local: .
+              container: /code
+            - type: cache
+              name: node-modules
+              container: /code/node_modules
+            - type: cache
+              name: playwright-cache
+              container: /home/container-user/.cache
+        working_directory: /code
+        run_as_current_user:
+            enabled: true
+            home_directory: /home/container-user
+
+tasks:
+    install-packages:
+        description: Run node install inside container
+        group: Utility tasks
+        run:
+            container: npm-build-env
+            command: npm install
+
+    install-playwright:
+        description: Run playwright install inside container
+        group: Utility tasks
+        run:
+            container: npm-build-env
+            command: npx playwright install
+
+    build-dist:
+        description: Build the final distribution
+        group: Build tasks
+        prerequisites:
+            - install-packages
+        run:
+            container: npm-build-env
+            command: npm run build
+
+    unit-test:
+        description: Run unit testing code
+        group: Testing tasks
+        prerequisites:
+            - install-packages
+        run:
+            container: npm-build-env
+            command: npm run test:unit
+            environment:
+                CI: "true"
+
+    e2e-test:
+        description: Run e2e testing code
+        group: Testing tasks
+        prerequisites:
+            - install-packages
+            - install-playwright
+            - build-dist
+        run:
+            container: npm-build-env
+            command: npm run test:e2e
+            environment:
+                CI: "true"
+
+    code-style:
+        description: check the code style
+        group: Testing tasks
+        prerequisites:
+            - install-packages
+        run:
+            container: npm-build-env
+            command: npm run lint
+
+    secret-scan:
+        description: Scan secrets inside code
+        group: Testing tasks
+        run:
+            container: npm-build-env
+            command: pre-commit run detect-secrets --all-files
+
+    dependency-scan:
+        description: Scan the dependencies
+        group: Testing tasks
+        prerequisites:
+            - install-packages
+        run:
+            container: npm-build-env
+            command: npm run audit
+
+    ci:
+        description: Run the steps on CI
+        group: Utility tasks
+        prerequisites:
+            - build-dist
+            - code-style
+            - secret-scan
+            - dependency-scan
+            - unit-test
+            - e2e-test

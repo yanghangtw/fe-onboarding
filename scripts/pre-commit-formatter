@@ -1,0 +1,4 @@
+#!/bin/sh
+
+npm run lint || { echo 'Encountered warnings and errors while linting. Please fix warnings and errors before commiting again.' ; exit 1; }
+npm run format
