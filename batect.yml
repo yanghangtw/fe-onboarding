@@ -72,7 +72,7 @@ tasks:
             - install-packages
         run:
             container: npm-build-env
-            command: npm run lint
+            command: npx prettier -c .
 
     secret-scan:
         description: Scan secrets inside code
