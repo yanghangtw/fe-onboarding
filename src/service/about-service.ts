@@ -3,7 +3,7 @@ import type { About } from "@/type/about";
 
 export class AboutService {
     private axios = new Axios({
-        baseURL: "https://something-that-work.free.beeceptor.com"
+        baseURL: import.meta.env.VITE_ABOUT_SERVICE_ADDRESS
     });
 
     public async getAboutFromServer(): Promise<About> {

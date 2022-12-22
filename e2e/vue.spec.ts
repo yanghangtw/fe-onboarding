@@ -8,15 +8,13 @@ test("visits the app root url", async ({ page }) => {
 });
 
 test("visits the about page", async ({ page }) => {
-    await page.route(
-        "https://something-that-work.free.beeceptor.com/about",
-        route => {
-            const json = {
-                body: "About from playwright"
-            };
-            route.fulfill({ json });
-        }
-    );
+    const address: string = process.env.VITE_ABOUT_SERVICE_ADDRESS ?? "";
+    await page.route(`${address}/about`, route => {
+        const json = {
+            body: "About from playwright"
+        };
+        route.fulfill({ json });
+    });
 
     await page.goto("/about");
     await expect(page.locator("div.about > h1")).toHaveText(
