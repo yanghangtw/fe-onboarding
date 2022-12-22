@@ -1,9 +1,10 @@
 import { Axios } from "axios";
 import type { About } from "@/type/about";
+import { getAppConfig } from "@/config/provider";
 
 export class AboutService {
     private axios = new Axios({
-        baseURL: import.meta.env.VITE_ABOUT_SERVICE_ADDRESS
+        baseURL: getAppConfig().service.aboutServerAddress
     });
 
     public async getAboutFromServer(): Promise<About> {

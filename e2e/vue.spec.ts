@@ -8,7 +8,7 @@ test("visits the app root url", async ({ page }) => {
 });
 
 test("visits the about page", async ({ page }) => {
-    const address: string = process.env.VITE_ABOUT_SERVICE_ADDRESS ?? "";
+    const address: string = process.env.VITE_ABOUT_SERVER_ADDRESS ?? "";
     await page.route(`${address}/about`, route => {
         const json = {
             body: "About from playwright"
